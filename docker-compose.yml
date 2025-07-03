@@ -1,0 +1,63 @@
+services:
+  api_gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_DIR: api_gateway
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./api_gateway:/app
+    environment:
+      - CONVERSATION_SERVICE_URL=http://conversation_service:5000
+      - SUMMARY_SERVICE_URL=http://summary_service:5000
+      - TRANSCRIPTION_SERVICE_URL=http://transcription_service:5000
+      - TTS_SERVICE_URL=http://tts_service:5000
+
+  transcription_service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_DIR: transcription_service
+    volumes:
+      - ./transcription_service:/app
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+
+  conversation_service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_DIR: conversation_service
+    volumes:
+      - ./conversation_service:/app
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+
+  summary_service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_DIR: summary_service
+    volumes:
+      - ./summary_service:/app
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+
+  tts_service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_DIR: tts_service
+    volumes:
+      - ./tts_service:/app
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+
+volumes:
+  reports:

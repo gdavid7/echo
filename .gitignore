@@ -1,0 +1,12 @@
+# Environment variables
+.env
+
+# Docker
+.dockerignore
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Other
+.DS_Store 
