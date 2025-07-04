@@ -118,14 +118,6 @@ async def openai_processor(twilio_ws, call_sid):
             "silence_duration_ms": 700,
             "prefix_padding_ms": 300
         },
-        "response": {
-            "end_of_turn_detection": {
-                "type": "relaxed"
-            }
-        },
-        "output_interruption": {
-            "enabled": True
-        },
         "input_audio_transcription": {
             "model": "gpt-4o-transcribe",
             "language": "en",
