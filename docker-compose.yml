@@ -6,15 +6,12 @@ services:
       args:
         SERVICE_DIR: voice_service
     ports:
-      - "5000:8080"
+      - "8080:8080"
     volumes:
       - ./voice_service:/app
     command: ["python", "app.py"]
-    environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
-      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
-      - SUMMARY_SERVICE_URL=http://summary_service:5000
+    env_file:
+      - .env
 
   summary_service:
     build:
@@ -24,8 +21,8 @@ services:
         SERVICE_DIR: summary_service
     volumes:
       - ./summary_service:/app
-    environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    env_file:
+      - .env
 
 volumes:
   reports:
