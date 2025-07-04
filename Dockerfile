@@ -1,22 +1,30 @@
-# Use an official Python runtime as a parent image
-FROM python:3.9-slim
+# Use a more recent stable base image
+FROM python:3.9-slim-bullseye
 
-# This build argument is provided by docker-compose.yml
-ARG SERVICE_DIR
+# Set environment variables to prevent Python from writing .pyc files and to buffer output
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Install build dependencies required for packages like gevent
+RUN apt-get update && apt-get install -y build-essential python3-dev
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the requirements file for the specific service and install dependencies
+# Argument to specify the service directory (e.g., voice_service, summary_service)
+ARG SERVICE_DIR
+
+# Upgrade pip and install python build dependencies first
 COPY ${SERVICE_DIR}/requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip
+# Pin Cython to a version before 3.0 to avoid compilation errors with gevent
+RUN pip install wheel "cython<3.0"
+
+# Now install the application dependencies
+RUN pip install --no-cache-dir --no-build-isolation -r requirements.txt
 
 # Copy the application code for the specific service
-# This makes the image self-contained and runnable without volumes
-COPY ${SERVICE_DIR}/ /app/
-
-# Expose the port the app runs on
-EXPOSE 5000
+COPY ${SERVICE_DIR}/ .
 
 # Define the command to run the application with access logging enabled
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--access-logfile", "-", "app:app"] 
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"] 
