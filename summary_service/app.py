@@ -53,7 +53,6 @@ def handle_summary():
             "- **History of Issue:** [Did the patient mention if this has happened before?]\n\n"
             "**Potential Clinical Considerations:**\n"
             "- [Based on the reported symptoms, list potential dental issues to investigate. Examples: 'Dental Caries (Cavity)', 'Pulpitis', 'Cracked Tooth Syndrome', 'Gingivitis', 'Periapical Abscess'. Frame these as possibilities.]\n\n"
-            "**Urgency Assessment (1-5):** [Provide a numerical score for clinical urgency (1=Routine, 5=Emergency) and a brief justification.]\n\n"
             "**Clinical Narrative:**\n"
             "- [If the patient reported significant pain, trauma, or swelling, provide a detailed narrative summary of the situation here. Synthesize the information from the other sections into a cohesive paragraph. Otherwise, state 'No significant issues reported requiring a detailed narrative.']\n\n"
             "Fill out each category as completely as possible. If the patient did not provide information for a specific category, explicitly state 'Not mentioned by patient'."
